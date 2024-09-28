@@ -1,0 +1,78 @@
+create database escuela;
+use escuela;
+
+CREATE TABLE apoderado(
+apoderado_id int,
+email varchar(30),
+nombre varchar(15),
+apellido varchar(15),
+PRIMARY KEY (apoderado_id)
+);
+
+CREATE TABLE estudiante(
+estudiante_id int,
+nombre varchar(15),
+apellido varchar(15),
+email varchar(30),
+clave varchar(30),
+fecha_admision date,
+apoderado_id int,
+PRIMARY KEY(estudiante_id),
+FOREIGN KEY (apoderado_id) REFERENCES apoderado(apoderado_id)
+);
+
+CREATE TABLE asistencia(
+fecha date,
+estudiante_id int,
+asistencia boolean,
+FOREIGN KEY (estudiante_id) REFERENCES estudiante(estudiante_id)
+);
+
+CREATE TABLE profesores(
+profesor_id int,
+email varchar(30),
+clave varchar(30),
+nombre varchar(15),
+apellido varchar(15),
+fecha_admision date,
+PRIMARY KEY (profesor_id)
+);
+
+CREATE TABLE curso(
+curso_id int,
+nombre varchar(15),
+PRIMARY KEY (curso_id)
+);
+
+CREATE TABLE materia(
+materia_id int,
+curso_id int,
+nombre varchar(15),
+PRIMARY KEY (materia_id),
+FOREIGN KEY (curso_id) REFERENCES curso (curso_id)
+);
+
+CREATE TABLE sala_de_clase(
+sala_de_clase_id int,
+anno YEAR,
+profesor_id int,
+materia_id int,
+PRIMARY KEY (sala_de_clase_id),
+FOREIGN KEY (profesor_id) REFERENCES profesores (profesor_id),
+FOREIGN KEY (materia_id) REFERENCES materia (materia_id)
+);
+
+CREATE TABLE estudiante_sala(
+estudiante_id int,
+sala_de_clase_id int,
+FOREIGN KEY (estudiante_id) REFERENCES estudiante (estudiante_id),
+FOREIGN KEY (sala_de_clase_id) REFERENCES sala_de_clase (sala_de_clase_id)
+);
+
+CREATE TABLE resultados(
+estudiante_id int,
+materia_id int,
+resultado boolean,
+FOREIGN KEY (estudiante_id) REFERENCES estudiante (estudiante_id),
+FOREIGN KEY (materia_id) REFERENCES materia (materia_id)
+);
