@@ -1,0 +1,92 @@
+create database RBAC;
+use RBAC;
+
+CREATE TABLE espacio_trabajo(
+espacio_trabajo_id INT,
+nombre VARCHAR(15),
+llave VARCHAR(15),
+autor VARCHAR(15),
+creado_en TIMESTAMP,
+actualizado_en TIMESTAMP,
+PRIMARY KEY (espacio_trabajo_id)
+);
+
+CREATE TABLE proyecto(
+proyecto_id INT,
+nombre VARCHAR(15),
+llave VARCHAR(15),
+descripcion VARCHAR(100),
+autor VARCHAR(15),
+creado_en TIMESTAMP,
+actualizado_en TIMESTAMP,
+espacio_trabajo_id INT,
+PRIMARY KEY (proyecto_id),
+FOREIGN KEY (espacio_trabajo_id) REFERENCES espacio_trabajo (espacio_trabajo_id)
+);
+
+CREATE TABLE recursos(
+recursos_id INT,
+nombre VARCHAR(15),
+llave VARCHAR(15),
+proyecto_id INT,
+autor VARCHAR(15),
+creado_en TIMESTAMP,
+actualizado_en TIMESTAMP,
+PRIMARY KEY (recursos_id),
+FOREIGN KEY (proyecto_id) REFERENCES proyecto(proyecto_id)
+);
+
+CREATE TABLE rol(
+rol_id INT,
+nombre VARCHAR(15),
+llave VARCHAR(15),
+descripcion VARCHAR(100),
+autor VARCHAR(15),
+creado_en TIMESTAMP,
+actualizado_en TIMESTAMP,
+PRIMARY KEY (rol_id)
+);
+
+CREATE TABLE recurso_rol(
+recursos_id INT,
+rol_id INT,
+accion VARCHAR(100),
+FOREIGN KEY (recursos_id) REFERENCES recursos(recursos_id),
+FOREIGN KEY (rol_id) REFERENCES rol(rol_id)
+);
+
+CREATE TABLE compannia(
+compannia_id INT,
+nombre VARCHAR(15),
+descripcion VARCHAR(100),
+proyecto_id INT,
+autor VARCHAR(15),
+creado_en TIMESTAMP,
+actualizado_en TIMESTAMP,
+PRIMARY KEY (compannia_id),
+FOREIGN KEY (proyecto_id) REFERENCES proyecto(proyecto_id)
+);
+
+CREATE TABLE usuario(
+usuario_id INT,
+nombre VARCHAR(15),
+email VARCHAR(15),
+llave VARCHAR(15),
+descripcion VARCHAR(100),
+autor VARCHAR(15),
+creado_en TIMESTAMP,
+actualizado_en TIMESTAMP,
+compannia_id INT,
+PRIMARY KEY (usuario_id),
+FOREIGN KEY (compannia_id) REFERENCES compannia(compannia_id)
+);
+
+CREATE TABLE usuario_rol(
+usuario_id INT,
+rol_id INT,
+autor VARCHAR(15),
+creado_en TIMESTAMP,
+actualizado_en TIMESTAMP,
+FOREIGN KEY (usuario_id) REFERENCES usuario(usuario_id),
+FOREIGN KEY (rol_id) REFERENCES rol(rol_id)
+);
